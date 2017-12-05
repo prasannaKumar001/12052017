@@ -11,7 +11,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html >
 <html dir="rtl" lang="ar">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -29,14 +30,25 @@
     <link type="text/css" rel="stylesheet" href="style/waitMe.css">
      <script src="script/waitMe.js"></script>
 	<style type="text/css">
-		#myFrame
-		{
-	   		background-image: url('style/images/loadingcir.gif');   
-	   		background-repeat: no-repeat;
-	   		background-attachment: fixed;
-    		background-position: center;
-		}
+		#loader{
+			position: fixed;
+			align-content: center;
+			align-items: center;
+			right: 28%;
+			left: 40%;
+			border-radius: 20px;
+			padding: 25px;
+			
+		}	
 	</style>
+	<script type="text/javascript">
+		 $(document).ready(function(){
+			$("#iframe").on('load',function(){
+				$("#loader").hide();
+			});			
+		}); 
+	</script>
+	<!--  background-image: url('style/images/loadingcir.gif'); -->
 <title>OpenText</title>
 </head>
 <body>
@@ -82,7 +94,8 @@
 					out.print("<script>alert('Error occurred while loading this page')</script>");
 					
 				}	
-			%>	
+			%>
+	
 	<div style="min-height: 117px; ">
 		<table  width="100%" border="0" class="level1table"  align="Right">
 			<tbody >
@@ -115,10 +128,10 @@
 		</table>
 	</div>
 	
-		<iframe id='myFrame' width="100%" height="450" scrolling="no" src="ListFiles.jsp?RequestNumber=<%= dataIDString %>">
-	
-	</iframe>
-	
+		<div id="myframe">
+			<img id="loader" src="style/images/loadingcir.gif" >
+		 	<iframe id="iframe" width="100%" height="450" scrolling="no" src="ListFiles.jsp?RequestNumber=<%= dataIDString %>" ></iframe>
+		</div>
 	<div id="dialog" class="model" style="display: none">
 			<div id="dwtcontrolContainer"></div>
 			<br/>
@@ -136,7 +149,42 @@
   				<label><input type="radio" value="tif" name="ImageType" id="imgTypetiff" />TIFF</label>
   				<label><input type="radio" value="pdf" name="ImageType" id="imgTypepdf" checked="checked" />PDF</label> -->
 		</div>	
-	
+	<div id="uploadDialog" style="display: none">	
+		<%-- <div id="header-inner">
+			<h1 id="logo">
+				<img alt="" src="headerbar_content_server.png">
+			</h1>
+		</div>
+		
+		<div style="padding-top: 20px">
+			
+				<form  onsubmit="return validateForm();" action="UploadServlet?RequestNumber=<%= dataIDString%>" enctype="multipart/form-data" method="post">
+					<table>
+					<tbody>
+						<tr>
+							<td><label class="uploadfieldtype">Select file to upload</label></td>
+							<td>:</td>
+							<td><input type="file" name="dataFile" class="inputfile" id="fileChooser"/></td>
+						</tr>
+						<tr>
+							<td><label class="uploadfieldtype">Document Type</label></td>
+							<td>:</td>
+							<td><input type="text" name="docType" id="docType"/></td>
+						</tr>
+						<tr>
+							<td><label class="uploadfieldtype">Subscription Number</label></td>
+							<td>:</td>
+							<td><input type="text" name="subNum" id="subNum"/></td>
+						</tr>
+						<tr>
+							<td><input type="submit" value="Upload" id="upload" onclick=""/></td>
+						</tr>
+						</tbody>
+					</table>
+				</form>	
+			 	
+		</div> --%>
+	</div>	
 	
 	
 	<p class="copyright">

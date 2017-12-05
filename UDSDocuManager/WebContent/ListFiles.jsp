@@ -1,4 +1,5 @@
 
+<%@page import="uds.opentext.dm.beans.Document"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -107,8 +108,6 @@
 		exit();
 	}
 	
-	
-	
 	function exit()
 	{
 		$("#dialog").dialog("close");
@@ -199,7 +198,7 @@
 			}
 			
 			table.dataTable tbody th, table.dataTable tbody td{
-				padding: 8px 3px;
+				padding: 0px 3px;
 			}	
 			
 			.options{
@@ -233,7 +232,7 @@
 			
 				//need to write logic to get parent id from DB
 				
-					List<Node> nodes=new ArrayList<Node>();
+					List<Document> documents=new ArrayList<Document>();
 					
 					String authToken=null;
 				try
@@ -246,7 +245,7 @@
 						
 						if(RequestNum!=0)
 						{
-							nodes=OTUtility.getChildren(authToken,RequestNum);//parent ID
+							documents=OTUtility.getChildren(authToken,RequestNum);//parent ID
 							//nodes2=OTUtility.excludedNodes(authToken,85457);
 						}
 					}
@@ -263,12 +262,12 @@
 			
 			
 	
-	
+		
 		<div style="margin-top:-10 px;">
 	
 			
-			<c:set var="n" value="<%=nodes%>"/>
-			<c:set var="k" value="<%=nodes%>"/>
+			<c:set var="n" value="<%=documents%>"/>
+			
 			<div id="tabs"  >
   				
 				<ul>
@@ -308,20 +307,20 @@
 						</thead>
 						<c:forEach items="${n}" var="element">
 						<c:choose>
-							<c:when test='<%= OTUtility.getNodeExcluded((Node)pageContext.getAttribute("element")) %>'>
+							<c:when test='${element.isExclude()}'>
 									<tr class="browseRow2" style="background-color: red !important;">
 										<td  class="browseRow2 ">
-											<input   type="checkbox" name="foo" id="ckb" value="${element.getID()}">
+											<input   type="checkbox" name="foo" id="ckb" value="${element.getDataID()}">
 										</td>
 										<td align="left"  class="browseRow2">
 							    			<a class="browseItemNameContainer"><c:out value="${element.getName()}"/></a>
 							    			<div id="z85229" class="functionMenuDiv"></div>
 								    	</td>
-								    	<td align="left"  class="browseRow2"><c:out value="${element.getCreateDate()}"/></td>
+								    	<td align="left"  class="browseRow2"><c:out value="${element.getCreatedDate()}"/></td>
 										<td align="left"  class="browseRow2"><c:out value="${element.getComment()}"/></td>
-										<td align="left"  class="browseRow2"><c:out value="${element.getID()}"/></td>
+										<td align="left"  class="browseRow2"><c:out value="${element.getDataID()}"/></td>
 										<td align="left" class="browseRow2">
-							    			<a href="#" id="${element.getID()}" onclick="downlaodFile(this.id,'download');" title="Download">Download</a>
+							    			<a href="#" id="${element.getDataID()}" onclick="downlaodFile(this.id,'download');" title="Download">Download</a>
 							    			<div id="z85229" class="functionMenuDiv"></div>
 								    	</td>
 								    </tr>
@@ -329,17 +328,17 @@
 						   	<c:otherwise>
 							<tr class="browseRow2">
 								<td  class="browseRow2 ">
-									<input   type="checkbox" name="foo" id="ckb" value="${element.getID()}">
+									<input   type="checkbox" name="foo" id="ckb" value="${element.getDataID()}">
 								</td>
 								<td align="left"  class="browseRow2">
 					    			<a class="browseItemNameContainer"><c:out value="${element.getName()}"/></a>
 					    			<div id="z85229" class="functionMenuDiv"></div>
 						    	</td>
-						    	<td align="left"  class="browseRow2"><c:out value="${element.getCreateDate()}"/></td>
+						    	<td align="left"  class="browseRow2"><c:out value="${element.getCreatedDate()}"/></td>
 						    	<td align="left"  class="browseRow2"><c:out value="${element.getComment()}"/></td>
-						    	<td align="left"  class="browseRow2"><c:out value="${element.getID()}"/></td>
+						    	<td align="left"  class="browseRow2"><c:out value="${element.getDataID()}"/></td>
 								<td align="left" class="browseRow2">
-					    			<a href="#" id="${element.getID()}" onclick="downlaodFile(this.id,'download');" title="Download">Download</a>
+					    			<a href="#" id="${element.getDataID()}" onclick="downlaodFile(this.id,'download');" title="Download">Download</a>
 					    			<div id="z85229" class="functionMenuDiv"></div>
 						    	</td>
 						    </tr>
@@ -365,29 +364,23 @@
 							 	<td class="browseListHeaderCheck"></td>
 						    </tr>
 						</thead>
-						<c:forEach items="${k}" var="element">
-							<c:if test='<%= OTUtility.getNodeExcluded((Node)pageContext.getAttribute("element")) %>'>
+						<c:forEach items="${n}" var="element">
+							<c:if test='${element.isExclude()}'>
 							<tr class="browseRow2" style="color: red">
-								<td  class="browseListHeaderCheck ">
-									<input   type="checkbox" name="foo" id="ckb" value="${element.getID()}">
+								<td  class="browseRow2 ">
+									<input   type="checkbox" name="foo" id="ckb" value="${element.getDataID()}">
 								</td>
 								<td align="left"  class="browseRow2">
 					    			<a class="browseItemNameContainer"><c:out value="${element.getName()}"/></a>
 					    			<div id="z85229" class="functionMenuDiv"></div>
 						    	</td>
-						    	<td align="left"  class="browseRow2"><c:out value="${element.getCreateDate()}"/></td>	
+						    	<td align="left"  class="browseRow2"><c:out value="${element.getCreatedDate()}"/></td>	
 						    	<td align="left"  class="browseRow2"><c:out value="${element.getComment()}"/></td>
-						    	<td align="left"  class="browseRow2"><c:out value="${element.getID()}"/></td>
+						    	<td align="left"  class="browseRow2"><c:out value="${element.getDataID()}"/></td>
 								<td align="left" class="browseRow2">
-					    			<a href="#" id="${element.getID()}" onclick="downlaodFile(this.id,'download');" title="Download">Download</a>
+					    			<a href="#" id="${element.getDataID()}" onclick="downlaodFile(this.id,'download');" title="Download">Download</a>
 					    			<div id="z85229" class="functionMenuDiv"></div>
 						    	</td>
-								
-							 	
-							 	
-								
-						    		
-						    		
 						    </tr>
 						    </c:if>
 						</c:forEach>
@@ -399,5 +392,6 @@
     		</div>
 		</div>	
 		</div>
+	
 </body>
 </html>

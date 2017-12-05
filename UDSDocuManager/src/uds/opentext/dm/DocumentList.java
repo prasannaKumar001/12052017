@@ -162,25 +162,6 @@ public class DocumentList extends HttpServlet {
 			}
 		}
 		
-		if(action.equals("Delete"))
-		{
-			//System.out.println("in post");
-			//String par=request.getParameter("parentID");
-			//String name=request.getParameter("name");
-			String data=request.getParameter("dataID");
-			if((data!=null))
-			{
-				//System.out.println(par);
-				
-				//int parentID=Integer.valueOf(par);
-				int dataID=Integer.valueOf(data);			 
-				String res=OTUtility.deleteDocument(authToken,dataID);
-				if(res!=null&&res.equals("deleted")){
-					PrintWriter os=response.getWriter();
-					os.write("<script type=text/javascript"+">window.close()</script>");
-				}
-			}
-		}
 		
 		if(action.equals("Exclude"))
 		{

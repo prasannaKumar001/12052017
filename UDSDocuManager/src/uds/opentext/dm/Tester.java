@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class Tester {
 			
 			System.out.print("Generating context ID...");
 	//		docManClient.addVersionContext(id, metadata)
-			contextID = docManClient.createDocumentContext(PARENT_ID, file.getName(), null, false, null);
+			contextID = docManClient.createDocumentContext(PARENT_ID, file.getName(), null, true, null);
 			//System.out.println("SUCCESS!\n");
 			
 			contentService = new ContentService_Service();
@@ -127,13 +128,20 @@ public class Tester {
 			((WSBindingProvider) contentServiceClient).setOutboundHeaders(headers);
 			
 			//System.out.print("Uploading document...");
+			//docManClient.get
 			String objectID = contentServiceClient.uploadContent(new DataHandler(new FileDataSource(file)));
 		
 			//System.out.println("SUCCESS!\n");
 			//System.out.println("New document uploaded with ID = " + objectID);
 			
 			int dataid=Integer.valueOf(objectID);
-			OTUtility.addCategory(authtoken,dataid,categoryTemplateID);
+			
+			
+			Map <String,String> metadata=new HashMap<>();
+			metadata.put("RequestNumber", "1725600086");
+			metadata.put("SubscriptionNumber", "3345667724");
+			metadata.put("DocumentType", "ZINSTLNCOS");
+			OTUtility.addCategory(authtoken,dataid,categoryTemplateID,metadata);
 			
 		}
 		catch (SOAPFaultException | IOException | DatatypeConfigurationException | SOAPException e)
@@ -148,13 +156,7 @@ public class Tester {
 		public static void main(String[] args) {
 			
 			String authtoken=OTUtility.getAuthToken("Otadmin@otds.admin", "SEC@crmp!2017");
-			//List<Node> list=OTUtility.getChildren(authtoken, 46418);
-			//boolean bool =OTUtility.getNodeExcluded(list.get(0));
-			Request req=OTUtility.getNode(authtoken, 46418);
-			
-			System.out.println(req.getCreatedDate().toString());
-			//System.out.println(bool);
-			//OTUtility.getNodeName(list.get(0));
+			uploaddocument(authtoken, "D:\\UDS\\MOM(UDS Integration).xlsx",53784, 56424);
 			
 		}
 }

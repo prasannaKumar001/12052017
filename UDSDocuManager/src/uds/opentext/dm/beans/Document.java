@@ -2,13 +2,15 @@ package uds.opentext.dm.beans;
 
 import java.util.Date;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 public class Document {
 	
 	private String name;
-	private Date createdDate;
-	private int dataID;
+	private XMLGregorianCalendar createdDate;
+	private long dataID;
 	private String comment;
-	private boolean execlude;
+	private boolean exclude;
 	
 	
 	public Document() 
@@ -16,14 +18,14 @@ public class Document {
 		super();		
 	}
 	
-	public Document(String name, Date createdDate, int dataID, String comment,boolean execlude) 
+	public Document(String name, XMLGregorianCalendar createdDate, int dataID, String comment,boolean execlude) 
 	{
 		super();
 		this.name = name;
 		this.createdDate = createdDate;
 		this.dataID = dataID;
 		this.comment = comment;
-		this.execlude = execlude;
+		this.exclude = execlude;
 	}
 	
 	public String getName() {
@@ -34,20 +36,20 @@ public class Document {
 		this.name = name;
 	}
 	
-	public Date getCreatedDate() {
+	public XMLGregorianCalendar getCreatedDate() {
 		return createdDate;
 	}
 	
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(XMLGregorianCalendar xmlGregorianCalendar) {
+		this.createdDate = xmlGregorianCalendar;
 	}
 	
-	public int getDataID() {
+	public long getDataID() {
 		return dataID;
 	}
 	
-	public void setDataID(int dataID) {
-		this.dataID = dataID;
+	public void setDataID(long l) {
+		this.dataID = l;
 	}
 	
 	public String getComment() {
@@ -58,14 +60,14 @@ public class Document {
 		this.comment = comment;
 	}
 	
-	public boolean isExeclude() {
-		return execlude;
+	public boolean isExclude() {
+		return exclude;
 	}
 
-	public void setExeclude(boolean execlude) {
-		this.execlude = execlude;
+	public void setExclude(boolean execlude) {
+		this.exclude = execlude;
 	}
-
+	
 	
 
 }

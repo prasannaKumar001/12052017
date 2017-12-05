@@ -197,17 +197,9 @@ function downloadAllFiles()
 		        width: 350,
 		        height:450,
 		        title: 'Document Scan'
-		};
-
-		//$("#dialog").dialog(opt).dialog("open");
-		//dialog();*/
-		
-		
-            var $body = $(window.frameElement).parents('body'),
-                dlg = $body.find('#dialog');
-            	dlg.dialog(opt).dialog("open");
-        
-		
+		};var $body = $(window.frameElement).parents('body'),
+           dlg = $body.find('#dialog');
+           dlg.dialog(opt).dialog("open");	
 	}
 	
 	if((document.getElementById("Display").selected))
@@ -329,59 +321,49 @@ if((document.getElementById("Send").selected))
 		inputElements=null;
 		}
 	}
-	/*if((document.getElementById("Delete").selected))
-	{
-		var chk=0;
-		var checkedValue = null; 
-		inputElements = document.getElementsByName('foo');
-		for(var i=0; inputElements[i]; ++i)
-		{
-			if(inputElements[i].checked)
-		    {
-				chk=chk+1;
-		    }
-		  }
-		if(chk>1)
-		{
-			alert("Multiple Documents can not be deleted");
-		}
-		if(chk==0)
-		{
-			alert("Please select atleast one")
-		}
-		if(chk==1)
-		{
-			for(var i=0; inputElements[i]; ++i)
-			{
-				if(inputElements[i].checked)
-			    {
-		           checkedValue = inputElements[i].value;
-		           deleteFile(checkedValue,'Delete')
-		           //alert(checkedValue)
-			    }
-			}
-		inputElements=null;
-		}
-	}
-	*/
+	
 	if((document.getElementById("Upload").selected))
-	{
+	{ 
+		/*dialog=$( "#uploadDialog" ).dialog({
+		      autoOpen: false,
+		      modal: true,
+		      width: 350,
+		      height:450,
+		      title: 'Document Scan'
+		    });
+		dialog.dialog( "open" );*/
 		
-		//alert(window.location.search.substr(1));
+		/*var opt = {
+		        autoOpen: false,
+		        modal: true,
+		        width: 400,
+		        height:350,
+		        title: 'Document Upload'
+		};
+		
+			
+			var $body = $(window.frameElement).parents('body'),
+           dlg = $body.find('#uploadDialog');
+           dlg.dialog(opt).dialog("open");*/
+		
 		var RequestNumber=window.location.search.substr(1);
-		var	w = window.open('http://'+serverIp+':8080/UDSDocuManager/upload.jsp?'+RequestNumber,'upload','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=500,height=300');
-
-		if ( w.focus )
-		{
-			w.focus();
-		}
-		var timer = setInterval(function() {   
-		    if(w.closed) {  
-		    	window.location.reload(true);
-		        clearInterval(timer);  
-		        //alert('closed');  
-		    }  
-		}, 1000);
+		var	page = 'http://'+serverIp+':8080/UDSDocuManager/upload.jsp?'+RequestNumber;
+		var $dialog=$('<div></div>')
+		.html('<iframe  width="100%" height="100%" src="'+page+'"scrolling="no" ></iframe>')
+		.dialog({
+			  autoOpen: false,
+		      modal: true,
+		      width: 500,
+		      height:300,
+		      title: 'Document upload',
+		      open:function(event,ui){$('body').css('overflow','hidden');$('ui-widget-overlay').css('width','100%');}
+		});
+         $dialog.dialog("open");  
+		/*var $body = $(window.frameElement).parents('body'),
+        dlg = $body.find('#uploadDialog');
+        dlg.dialog.dialog("open");*/
+		
+		
 	}
 	
 	if((document.getElementById("Exclude").selected))
@@ -472,15 +454,6 @@ $(document).ready(function() {
     $("#tabs").tabs( {
         "activate": function(event, ui) {
         	 var active = $('#tabs').tabs('option', 'active');
-            //alert($("#tabs ul>li a").eq(active).attr("href"));
-            /*if($("#tabs ul>li a").eq(active).attr("href")=='#tabs-2')
-            {
-            	$("#selectlist option[value='Retrieve']").show();
-            }
-            else
-            {
-            	$("#selectlist option[value='Retrieve']").hide();
-            }*/
             var table = $.fn.dataTable.fnTables(true);
             if ( table.length > 0 ) {
                 $(table).dataTable().fnAdjustColumnSizing();
@@ -504,11 +477,11 @@ $(document).ready(function() {
 	
 //Dyno soft scanning code
 
-
-
-$( function dialog()  {
-    $( "#dialog" ).dialog("open");
-  } );
+/*$( function dialog()  {
+	$(document).ready(function(){
+		$( "#dialog" ).dialog("open");
+		} );
+	})*/
 
 
 $('.waitMe_ex_close').click(function(){
@@ -536,5 +509,49 @@ textPos: 'vertical',
 ontSize: '',
 onClose: function() {}});
 }
+
+function validateForm()
+{
+	if (!document.getElementById("fileChooser").value) {
+        alert("Please choose a file!");
+        return false;    
+    }
+	if((document.getElementById('docType').value).trim()=="")
+	{
+	 	alert("Please Enter Document Type..!");
+        return false;
+	}
+	if((document.getElementById('subNum').value).trim()=="")
+	{
+	 	alert("Please Enter Subscription Number..!");
+        return false;
+	}
+	
+	spin();				
+}
+
+var current_effect = 'bounce'; // 
+
+
+
+function spin()
+{
+	run_waitMe(current_effect);
+	}
+		
+function run_waitMe(effect){
+$('#container').waitMe({
+effect: 'roundBounce',
+text: '',
+g: 'rgba(255,255,255,0.7)',
+color: '#000',
+maxSize: '',
+waitTime: -1,
+source: '',
+textPos: 'vertical',
+ontSize: '',
+onClose: function() {}});
+}
+
 
 		

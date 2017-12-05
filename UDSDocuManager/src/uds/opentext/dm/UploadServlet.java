@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -19,6 +21,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+
+import uds.opentext.dm.beans.Message;
 
 /**
  * Servlet implementation class UploadServlet
@@ -39,6 +43,8 @@ public class UploadServlet extends HttpServlet {
 		String PASSWORD=prop.getProperty("UDS.PASSWORD");
 		String documentType=null;
 		String subscriberNumber=null;
+		Map <String,String> metadata=new HashMap<>();
+		
 		
 		String dataIDString=request.getParameter("RequestNumber");
 		
@@ -138,14 +144,27 @@ public class UploadServlet extends HttpServlet {
             }
             if(RequestNum!=0)
             {
+            	metadata.put("RequestNumber", String.valueOf(RequestNum));
+        		metadata.put("SubscriptionNumber", subscriberNumber);
+        		metadata.put("DocumentType", documentType);
             	// displays done.jsp page after upload finished
-            	OTUtility.uploaddocument(authToken,filePath,RequestNum,categoryTemplateID,subscriberNumber,documentType);
-            	//getServletContext().getRequestDispatcher("/done.jsp").forward(request, response);
+            	Message msg=OTUtility.uploaddocument(authToken,filePath,RequestNum,categoryTemplateID,metadata);
+            	if(msg.getStatusCode()==200)
+            	{
+            		request.setAttribute("Message", msg);
+            		
+            		getServletContext().getRequestDispatcher("/done.jsp").forward(request, response);
+            	}
+            	else
+            	{
+            		request.setAttribute("Message", msg);
+            		getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+            	}
             	//response.
             }
         
-		PrintWriter os=response.getWriter();
-		os.write("<script type=text/javascript"+">window.close()</script>");
+		//PrintWriter os=response.getWriter();
+		//os.write("<script type=text/javascript"+">window.close()</script>");
 	    }
         catch (Exception ex)
         {

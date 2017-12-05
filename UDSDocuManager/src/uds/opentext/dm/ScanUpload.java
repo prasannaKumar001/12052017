@@ -2,8 +2,10 @@ package uds.opentext.dm;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -49,7 +51,7 @@ public class ScanUpload extends HttpServlet {
 		String documentType=null;
 		String subscriberNumber=null;
 		
-		
+		Map <String,String> metadata=new HashMap<>();
 		String categoryID=prop.getProperty("UDS.CategoryTemplateID");
 		int categoryTemplateID = 0;
 		if(categoryID!=null && !categoryID.equals(""))
@@ -138,9 +140,12 @@ public class ScanUpload extends HttpServlet {
 	                	
 	                }
 	            }
-	
+	            
+	            //metadata.put("RequestNumber", String.valueOf(RequestNum));
+        		metadata.put("SubscriptionNumber", subscriberNumber);
+        		metadata.put("DocumentType", documentType);
 	            // displays done.jsp page after upload finished
-	            OTUtility.uploaddocument(authToken,filePath,85457,categoryTemplateID,subscriberNumber,documentType);
+	            OTUtility.uploaddocument(authToken,filePath,85457,categoryTemplateID,metadata);
 	            //getServletContext().getRequestDispatcher("/done.jsp").forward(request, response);
 	            //response.
 	      

@@ -10,19 +10,31 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+	<script type="text/javascript">
+		
+	function validateForm()
+	{
+		if (!document.getElementById("recipient").value) {
+            alert("Please choose a file!");
+            return false;    
+        }	
+	}	
+	
+	</script>
 <title>Send an e-mail</title>
 </head>
 <body>
-    <form action="EmailSendingServlet" method="post">
+    <form onsubmit="return validateForm()" action="EmailSendingServlet" method="post">
         <table border="0" width="35%" align="center">
             <caption><h2>Send New E-mail</h2></caption>
             <tr>
                 <td width="50%">Recipient address </td>
-                <td><input type="text" name="recipient" size="50"/></td>
+                <td><input type="text" id='recipient' name="recipient" size="50"/></td>
             </tr>
             <tr>
                 <td>Subject </td>
-                <td><input type="text" name="subject" size="50"/></td>
+                <td><input type="text" id='subject' name="subject" size="50"/></td>
             </tr>
             <% 
            		/* Properties prop = new Properties();
